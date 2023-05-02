@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+  postgres:
+    container_name: "postgres"
+    build:
+      context: ./postgresql
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U postgres -d postgres
+      timeout: 45s
+      interval: 10s
+      retries: 10
