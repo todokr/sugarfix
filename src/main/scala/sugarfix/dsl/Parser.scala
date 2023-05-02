@@ -1,7 +1,7 @@
 package sugarfix.dsl
 
 import fastparse.Parsed
-import sugarfix.SpecifiedValue.{Reference, Text}
+import sugarfix.SpecifiedValue.{External, Text}
 import sugarfix.{Column, FocalTable, Row, SpecifiedValue}
 
 trait Parser {
@@ -51,7 +51,7 @@ private[dsl] object Parser {
   def LowerLine[$: P]: P[Unit] = P("└" ~ ("─" | "┴").rep ~ "┘" ~ (Newline | ""))
 
   def ReferenceTerm[$: P]: P[SpecifiedValue] =
-    P(Token.rep.! ~ WSs ~ "->" ~ WSs ~ Token.rep.!).map { case (t, a) => Reference(t, a) }
+    P(Token.rep.! ~ WSs ~ "->" ~ WSs ~ Token.rep.!).map { case (t, a) => External(t, a) }
   def TextTerm[$: P]: P[SpecifiedValue] = P(Term.rep.!).map(x => Text(x.trim))
 
   def WS[$: P] = P(" ")

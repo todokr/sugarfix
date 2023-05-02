@@ -37,7 +37,7 @@ class ParserTest extends munit.FunSuite {
   test("parse reference") {
     val input    = "departments -> hr"
     val result   = fParse(input, Parser.ReferenceTerm(_)).get.value
-    val expected = Reference("departments", "hr")
+    val expected = External("departments", "hr")
     assertEquals(result, expected)
   }
 
@@ -86,7 +86,7 @@ class ParserTest extends munit.FunSuite {
               Column("alias", Text("hr_person")),
               Column("user_name", Text("Jinnai")),
               Column("age", Text("31")),
-              Column("department_id", Reference("departments", "hr"))
+              Column("department_id", External("departments", "hr"))
             )
           ),
           Row(
@@ -94,7 +94,7 @@ class ParserTest extends munit.FunSuite {
               Column("alias", Text("sales_person")),
               Column("user_name", Text("Urita")),
               Column("age", Text("27")),
-              Column("department_id", Reference("departments", "sales"))
+              Column("department_id", External("departments", "sales"))
             )
           )
         )
