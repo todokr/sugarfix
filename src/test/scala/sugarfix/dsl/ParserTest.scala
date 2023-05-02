@@ -1,8 +1,8 @@
-package io.github.todokr.sugarfix.dsl
+package sugarfix.dsl
 
 import fastparse.{parse => fParse}
-import io.github.todokr.sugarfix.SpecifiedValue._
-import io.github.todokr.sugarfix._
+import sugarfix.SpecifiedValue._
+import sugarfix.{Column, FocalTable, Row}
 
 class ParserTest extends munit.FunSuite {
   val parser = new Parser {}

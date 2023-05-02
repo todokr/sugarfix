@@ -1,4 +1,4 @@
-package io.github.todokr.sugarfix
+package sugarfix
 
 final case class FocalTable(tableName: String, rows: Seq[Row])
 final case class Row(columns: Seq[Column])

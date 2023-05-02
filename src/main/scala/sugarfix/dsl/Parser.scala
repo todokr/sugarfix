@@ -1,13 +1,14 @@
-package io.github.todokr.sugarfix.dsl
+package sugarfix.dsl
 
 import fastparse.Parsed
-import io.github.todokr.sugarfix.{Column, FocalTable, Row, SpecifiedValue}
-import io.github.todokr.sugarfix.SpecifiedValue.{Reference, Text}
+import sugarfix.SpecifiedValue.{Reference, Text}
+import sugarfix.{Column, FocalTable, Row, SpecifiedValue}
 
 trait Parser {
-  import scala.util.chaining._
-  import fastparse.{parse => fParse}
   import Parser._
+  import fastparse.{parse => fParse}
+
+  import scala.util.chaining._
 
   def parseDsl(raw: String): Seq[FocalTable] =
     raw.pipe(normalize).pipe(parse)
