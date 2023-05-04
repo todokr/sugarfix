@@ -1,8 +1,9 @@
 package sugarfix.dsl
 
 import fastparse.{parse => fParse}
-import sugarfix.SpecifiedValue._
-import sugarfix.{Column, FocalTable, Row}
+import sugarfix.dsl.FocalTable
+import sugarfix.dsl.FocalTable._
+import SpecifiedValue._
 
 class ParserTest extends munit.FunSuite {
   val parser = new Parser {}

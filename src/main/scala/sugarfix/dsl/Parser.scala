@@ -1,8 +1,10 @@
 package sugarfix.dsl
 
 import fastparse.Parsed
-import sugarfix.SpecifiedValue.{External, Text}
-import sugarfix.{Column, FocalTable, Row, SpecifiedValue}
+
+import FocalTable._
+import SpecifiedValue._
+import Value._
 
 trait Parser {
   import Parser._
@@ -19,7 +21,7 @@ trait Parser {
   private[dsl] def parse(input: String): Seq[FocalTable] =
     fParse(input, DslExpr(_)) match {
       case Parsed.Success(value, _) => value
-      case failure: Parsed.Failure => throw new Exception(failure.toString)
+      case failure: Parsed.Failure  => throw new Exception(failure.toString)
     }
 
 }
@@ -42,23 +44,22 @@ private[dsl] object Parser {
         FocalTable(tableName, rows)
     }
 
-  def TableName[$: P]: P[String] = P("#" ~ WSs ~ Term.! ~ Newline)
+  def TableName[$: P]: P[String]       = P("#" ~ WSs ~ Term.! ~ Newline)
   def HeaderLine[$: P]: P[Seq[String]] = P(("│" ~ WSs ~ Term.!).rep(1) ~ "│" ~ Newline).map(_.map(_.trim))
   def ContentLines[$: P]: P[Seq[Seq[SpecifiedValue]]] = P((ContentLine ~ Newline.?).rep(1))
-  def ContentLine[$: P]: P[Seq[SpecifiedValue]] = P("│" ~ (WSs ~ (ReferenceTerm | TextTerm) ~ WSs ~ "│").rep)
-  def UpperLine[$: P]: P[Unit] = P("┌" ~ ("─" | "┬").rep ~ "┐" ~ Newline)
-  def DelimiterLine[$: P]: P[Unit] = P("├" ~ ("─" | "┼").rep ~ "┤" ~ Newline)
-  def LowerLine[$: P]: P[Unit] = P("└" ~ ("─" | "┴").rep ~ "┘" ~ (Newline | ""))
+  def ContentLine[$: P]: P[Seq[SpecifiedValue]]       = P("│" ~ (WSs ~ (ReferenceTerm | TextTerm) ~ WSs ~ "│").rep)
+  def UpperLine[$: P]: P[Unit]                        = P("┌" ~ ("─" | "┬").rep ~ "┐" ~ Newline)
+  def DelimiterLine[$: P]: P[Unit]                    = P("├" ~ ("─" | "┼").rep ~ "┤" ~ Newline)
+  def LowerLine[$: P]: P[Unit]                        = P("└" ~ ("─" | "┴").rep ~ "┘" ~ (Newline | ""))
 
   def ReferenceTerm[$: P]: P[SpecifiedValue] =
     P(Token.rep.! ~ WSs ~ "->" ~ WSs ~ Token.rep.!).map { case (t, a) => External(t, a) }
   def TextTerm[$: P]: P[SpecifiedValue] = P(Term.rep.!).map(x => Text(x.trim))
 
-  def WS[$: P] = P(" ")
-  def WSs[$: P] = P(WS.rep)
-  def Alpha[$: P] = P(CharIn("a-z", "A-Z").rep(1))
+  def WS[$: P]     = P(" ")
+  def WSs[$: P]    = P(WS.rep)
+  def Alpha[$: P]  = P(CharIn("a-z", "A-Z").rep(1))
   def Number[$: P] = P(CharIn("0-9").rep(1))
-  def Token[$: P] = P((Number | Alpha | "_" | "-").rep(1))
-  def Term[$: P] = P(Token ~ (Token | WS).rep)
+  def Token[$: P]  = P((Number | Alpha | "_" | "-").rep(1))
+  def Term[$: P]   = P(Token ~ (Token | WS).rep)
 }
-

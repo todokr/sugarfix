@@ -1,8 +1,10 @@
-package sugarfix
+package sugarfix.planning
 
 import grokschema.core.{Reference, ReferentTree, TableId}
 import munit.FunSuite
-import sugarfix.SpecifiedValue.{External, Text}
+import sugarfix.dsl.FocalTable
+import sugarfix.dsl.FocalTable._
+import SpecifiedValue._
 
 class PlannerTest extends FunSuite {
   val planner = new Planner {}
