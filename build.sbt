@@ -16,8 +16,8 @@ lazy val root = project
       "-Ytasty-reader"
     ),
     libraryDependencies ++= Seq(
-      ("io.github.todokr" %% "grokschema" % "0.1.1").cross(CrossVersion.for2_13Use3),
-      "com.lihaoyi"      %% "fastparse"  % "3.0.1",
-      "org.scalameta"    %% "munit"      % "0.7.29" % Test
+      ("io.github.todokr" %% "grokschema" % "0.1.2").cross(CrossVersion.for2_13Use3),
+      "com.lihaoyi"       %% "fastparse"  % "3.0.1",
+      "org.scalameta"     %% "munit"      % "0.7.29" % Test
     )
   )
