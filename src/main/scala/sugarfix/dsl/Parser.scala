@@ -4,7 +4,6 @@ import fastparse.Parsed
 
 import FocalTable._
 import SpecifiedValue._
-import Value._
 
 trait Parser {
   import Parser._

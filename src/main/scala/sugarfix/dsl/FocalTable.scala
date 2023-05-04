@@ -17,16 +17,4 @@ object FocalTable {
       override def toString: String = s"$tableName -> $alias"
     }
   }
-
-  final case class LogicalQuery(schema: String, tableName: String, colValues: Seq[ColumnValue])
-  final case class ColumnValue(columnName: String, value: Value)
-  sealed trait Value {
-    def toString: String
-  }
-  object Value {
-    final case class TextValue(value: String) extends Value {
-      override def toString: String = value
-    }
-    // TODO other type
-  }
 }
