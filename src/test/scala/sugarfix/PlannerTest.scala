@@ -1,13 +1,13 @@
 package sugarfix
 
-import grokschema.core.{Reference, TableId}
+import grokschema.core.{Reference, ReferentTree, TableId}
 import munit.FunSuite
 import sugarfix.SpecifiedValue.{External, Text}
 
 class PlannerTest extends FunSuite {
   val planner = new Planner {}
 
-  test("plan") {
+  test("Planner#buildTree") {
     val tables = Seq(
       FocalTable(
         tableName = "city",
@@ -25,19 +25,28 @@ class PlannerTest extends FunSuite {
       Reference(
         constraintName = "fk_city",
         fromTable = TableId("public", "city"),
-        fromColumn= "country_id",
+        fromColumn = "country_id",
         toTable = TableId("public", "country"),
         toColumn = "country_id"
       )
     )
 
-    val result = planner.plan(tables, references)
+    val result = planner.buildTree(tables, references)
 
-    val expected = Seq(LogicalQuery(
-      schema = "public",
-      tableName = "country",
-      colValues = Seq()
-    ))
+    val expected = Seq(
+      ReferentTree(
+        Set(
+          Reference(
+            constraintName = "fk_city",
+            fromTable = TableId("public", "city"),
+            fromColumn = "country_id",
+            toTable = TableId("public", "country"),
+            toColumn = "country_id"
+          )
+        ),
+        TableId("public", "city")
+      )
+    )
 
     assertEquals(result, expected)
   }
